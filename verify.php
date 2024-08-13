@@ -1,5 +1,8 @@
 <?php
-    
+    session_start();
+    if(isset($_SESSION['id'])){
+        header("location:index.php");
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,11 +19,17 @@
         $password = $_POST['pwd'];
 
         if($login == "admin" && $password == "ad1234"){
+            $_SESSION['username'] = "admin";
+            $_SESSION['role'] = "a";
+            $_SESSION['id'] = session_id();
             echo "<center>
                     <div>ยินดีต้อนรับคุณ ADMIN</div>
                 </center>";
         }
         elseif($login == "member" && $password == "mem1234"){
+            $_SESSION['username'] = "member";
+            $_SESSION['role'] = "m";
+            $_SESSION['id'] = session_id();
             echo "<center>
                     <div>ยินดีต้อนรับคุณ MEMBER</div>
                 </center>";
