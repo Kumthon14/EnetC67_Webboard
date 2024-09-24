@@ -22,22 +22,17 @@
             $_SESSION['username'] = "admin";
             $_SESSION['role'] = "a";
             $_SESSION['id'] = session_id();
-            echo "<center>
-                    <div>ยินดีต้อนรับคุณ ADMIN</div>
-                </center>";
+            header("location:index.php");
         }
         elseif($login == "member" && $password == "mem1234"){
             $_SESSION['username'] = "member";
             $_SESSION['role'] = "m";
             $_SESSION['id'] = session_id();
-            echo "<center>
-                    <div>ยินดีต้อนรับคุณ MEMBER</div>
-                </center>";
+            header("location:index.php");
         }
         else{
-            echo "<center>
-                    <div>ชื่อบัญชีหรือรหัสผ่านไม่ถูกต้อง</div>
-                </center>";
+            $_SESSION['error'] = 1;
+            header("location:login.php");
         }
     ?>
     <div align="center"><a href="index.php">กลับไปหน้าหลัก</a></div>
