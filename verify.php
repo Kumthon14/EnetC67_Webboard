@@ -33,6 +33,7 @@
         else{
             $_SESSION['error'] = 1;
             header("location:login.php");
+            die();
         }
     ?>
     <div align="center"><a href="index.php">กลับไปหน้าหลัก</a></div>

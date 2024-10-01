@@ -27,21 +27,21 @@ if (isset($_SESSION['id'])) {
 
         <br>
 
-        <?php
-        if (isset($_SESSION['error'])) {
-            if ($_SESSION['error'] == 1) {
-                echo "<div class='alert alert-danger me-auto ms-auto' style='width: 400px;'>
-                    ชื่อบัญชีหรือรหัสผ่านไม่ถูกต้อง
-                </div>";
-                unset($_SESSION['error']);
-            }
-        }
-        ?>
+
 
 
         <form action="verify.php" method="post">
             <div class="row">
                 <div class="col-sm-8 col-md-6 col-lg-4 mx-auto">
+                    <?php
+                    if (isset($_SESSION['error'])) {
+                            echo "
+                                <div class='alert alert-danger'>
+                                ชื่อบัญชีหรือรหัสผ่านไม่ถูกต้อง
+                                </div>";
+                            unset($_SESSION['error']);
+                    }
+                    ?>
                     <div class="card">
                         <div class="card-header">เข้าสู่ระบบ</div>
                         <div class="card-body">
