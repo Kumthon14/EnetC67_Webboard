@@ -27,11 +27,17 @@ session_start();
             หมวดหมู่:
             <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 --ทั้งหมด--
-            </button>
+            </button> 
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">ทั้งหมด</a></li>
-                <li><a class="dropdown-item" href="#">เรื่องเรียน</a></li>
-                <li><a class="dropdown-item" href="#">เรื่องทั่วไป</a></li>
+                <li><a href="#" class="dropdown-item">ทั้งหมด</a></li>
+                <?php
+                    $conn = new PDO("mysql:host=localhost;dbname=webboard;charset=utf8","root","");
+                    $sql = "SELECT * FROM category";
+                    foreach ($conn->query($sql) as $row) {
+                        echo "<li><a href='#' class='dropdown-item'>$row[name]</a></li>";
+                    }
+                    $conn = null;
+                ?>
             </ul>
         </span>
         
@@ -47,32 +53,21 @@ session_start();
         <br>
 
         <table class="table table-striped">
-            <tbody>
-                <?php
-                    if (!isset($_SESSION['id'])) {
-                        for ($i = 1; $i <= 10; $i++) {
-                            echo "<tr><td><a href='post.php?id=$i' class='link-underline link-underline-opacity-0'>กระทู้ที่ $i</a></td></tr>";
-                        }
-                    }else {
-                        if ($_SESSION['username'] == 'admin') {
-                            for ($i = 1; $i <= 10; $i++) {
-                                echo "<tr>
-                                        <td>
-                                            <a href='post.php?id=$i' class='link-underline link-underline-opacity-0'>กระทู้ที่ $i</a>
-                                            <button type='button' class='btn btn-danger btn-sm' style='float:right;'><a class='link-light link-offset-2 link-underline link-underline-opacity-0' href='delete.php?id=$i'><i class='bi bi-trash'></i></a></button>
-                                        </td>
-                                    </tr>";
-                            }
-                        } else {
-                            for ($i = 1; $i <= 10; $i++) {
-                                echo "<tr><td><a href='post.php?id=$i' class='link-underline link-underline-opacity-0'>กระทู้ที่ $i</a></td></tr>";
-                            }
-                        }
-                    }
-                ?>
-            </tbody>
+            <?php
+                $conn = new PDO("mysql:host=localhost;dbname=webboard;charset=utf8","root","");
+                $sql = "SELECT category.name,post.title,post.id,user.login,post.post_date FROM post as post INNER JOIN user as user ON (post.user_id=user.id) INNER JOIN category as category ON (post.cat_id=category.id) ORDER BY post.post_date DESC";
+                $result = $conn->query($sql);
+                while($row = $result->fetch()){
+                    echo "<tr><td>[ $row[0] ] <a href=post.php?id=$row[2] style=text-decoration:none>$row[1]</a><br>$row[3] - $row[4]</td></tr>";
+                }
+                $conn = null;
+            ?>
         </table>
     </div>
+
+    <ul class="dropdown-menu" aria-labelledby="Button2">
+        <li><a href="#" class="dropdown-item"></a></li>
+    </ul>
 </body>
 
 </html>

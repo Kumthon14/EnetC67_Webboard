@@ -17,18 +17,14 @@ if (isset($_SESSION['id'])) {
 </head>
 
 <body>
-    <div class="container-lg d-block" ;>
+    <div class="container-lg" ;>
         <h1 style="text-align: center;">Webboard KakKak</h1>
-        <hr>
 
         <?php
         include "nav.php";
         ?>
 
         <br>
-
-
-
 
         <form action="verify.php" method="post">
             <div class="row">
