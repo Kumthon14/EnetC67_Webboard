@@ -23,9 +23,9 @@
 
             $conn = null;
 
-            header("location:index.php");
+            header("location:index.php?id=0");
         }else{
-            header("location:index.php");
+            header("location:index.php?id=0");
         }
     ?>
 </body>

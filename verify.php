@@ -1,7 +1,7 @@
 <?php
     session_start();
     if(isset($_SESSION['id'])){
-        header("location:index.php");
+        header("location:index.php?id=0");
     }
     $login = $_POST['login'];
     $pwd = $_POST['pwd'];
@@ -15,7 +15,7 @@
         $_SESSION['user_id'] = $data['id'];
         $_SESSION['id'] = session_id();
         $conn = null;
-        header('location:index.php');
+        header('location:index.php?id=0');
         die();
     }
     else{

@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (isset($_SESSION['id'])) {
-    header("location:index.php");
+    header("location:index.php?id=0");
 }
 ?>
 <!DOCTYPE html>
@@ -21,7 +21,7 @@ if (isset($_SESSION['id'])) {
         <h1 style="text-align: center;">Webboard KakKak</h1>
 
         <?php
-        include "nav.php";
+            include "nav.php";
         ?>
 
         <br>

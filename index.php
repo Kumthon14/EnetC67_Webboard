@@ -1,5 +1,8 @@
 <?php
-session_start();
+    session_start();
+    if(!isset($_GET['id'])){
+        header("location:index.php?id=0");
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,7 +19,7 @@ session_start();
 <body>
     <div class="container-lg mt-3">
         <h1 style="text-align: center;" class="mt-3">Webboard KakKak</h1>
-        
+
         <?php
             include "nav.php";
         ?>
@@ -26,22 +29,32 @@ session_start();
         <span class="dropdown">
             หมวดหมู่:
             <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                --ทั้งหมด--
-            </button> 
-            <ul class="dropdown-menu">
-                <li><a href="#" class="dropdown-item">ทั้งหมด</a></li>
                 <?php
-                    $conn = new PDO("mysql:host=localhost;dbname=webboard;charset=utf8","root","");
-                    $sql = "SELECT * FROM category";
-                    foreach ($conn->query($sql) as $row) {
-                        echo "<li><a href='#' class='dropdown-item'>$row[name]</a></li>";
+                    $conn = new PDO("mysql:host=localhost;dbname=webboard;charset=utf8", "root", "");
+                    if($_GET['id'] == 0){
+                        echo "ทั้งหมด";
+                    }else{
+                        $sql = "SELECT name FROM category WHERE id=$_GET[id]";
+                        $result = $conn->query($sql);
+                        $row = $result->fetch();
+                        echo $row["name"];
                     }
-                    $conn = null;
+                ?>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href='index.php?id=0' class='dropdown-item'>ทั้งหมด</a></li>
+                <?php
+                $conn = new PDO("mysql:host=localhost;dbname=webboard;charset=utf8", "root", "");
+                $sql = "SELECT * FROM category";
+                foreach ($conn->query($sql) as $row) {
+                    echo "<li><a href='index.php?id=$row[id]' class='dropdown-item'>$row[name]</a></li>";
+                }
+                $conn = null;
                 ?>
             </ul>
         </span>
-        
-        
+
+
 
         <?php
         if (isset($_SESSION['id'])) {
@@ -54,17 +67,30 @@ session_start();
 
         <table class="table table-striped">
             <?php
-                $conn = new PDO("mysql:host=localhost;dbname=webboard;charset=utf8","root","");
+            $conn = new PDO("mysql:host=localhost;dbname=webboard;charset=utf8", "root", "");
+            if($_GET['id'] == 0){
                 $sql = "SELECT category.name,post.title,post.id,user.login,post.post_date FROM post INNER JOIN user ON (post.user_id=user.id) INNER JOIN category as category ON (post.cat_id=category.id) ORDER BY post.post_date DESC";
-                $result = $conn->query($sql);
-                while($row = $result->fetch()){
-                    echo "<tr><td>[ $row[0] ] <a href=post.php?id=$row[2] style=text-decoration:none>$row[1]</a>";
-                    if(isset($_SESSION['id']) && $_SESSION["role"] == 'a'){
-                        echo "<a onclick='confirmdelete($row[2])' class='btn btn-danger' style='float:right' role='button'><i class='bi bi-trash'></i></a>";
+            }else{
+                $sql = "SELECT category.name,post.title,post.id,user.login,post.post_date FROM post INNER JOIN user ON (post.user_id=user.id) INNER JOIN category as category ON (post.cat_id=category.id) WHERE category.id=$_GET[id] ORDER BY post.post_date DESC";
+            }
+            $result = $conn->query($sql);
+            while ($row = $result->fetch()) {
+                echo "<tr><td>[ $row[0] ] <a href=post.php?id=$row[2] style=text-decoration:none>$row[1]</a>";
+                if (isset($_SESSION['id']) && $_SESSION["role"] == 'a') {
+                    echo "<a onclick='confirmdelete($row[2])' class='btn btn-danger' style='float:right' role='button'><i class='bi bi-trash'></i></a>";
+                    if($row[3] == $_SESSION['username']){
+                        echo "<a href='editpost.php?id=$row[2]' class='btn btn-warning me-2' style='float:right' role='button'><i class='bi bi-pencil'></i></i></a>";
                     }
-                    echo "<br>$row[3] - $row[4]</td></tr>";
+                }else if(isset($_SESSION['id'])){
+                    if($row[3] == $_SESSION['username']){
+                        echo "<a onclick='confirmdelete($row[2])' class='btn btn-danger' style='float:right' role='button'><i class='bi bi-trash'></i></a>";
+                        echo "<a href='editpost.php?id=$row[2]' class='btn btn-warning me-2' style='float:right' role='button'><i class='bi bi-pencil'></i></i></a>";
+                    }
                 }
-                $conn = null;
+
+                echo "<br>$row[3] - $row[4]</td></tr>";
+            }
+            $conn = null;
             ?>
         </table>
     </div>
@@ -74,8 +100,8 @@ session_start();
     </ul>
 
     <script>
-        function confirmdelete(a){
-            if(confirm("คุณต้องการจะลบหรือไม่") == true){
+        function confirmdelete(a) {
+            if (confirm("คุณต้องการจะลบหรือไม่") == true) {
                 location.href = `delete.php?id=${a}`;
             }
         }

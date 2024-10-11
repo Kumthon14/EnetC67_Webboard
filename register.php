@@ -1,7 +1,7 @@
 <?php
 	session_start();
 	if (isset($_SESSION['id'])) {
-		header("location:index.php");
+		header("location:index.php?id=0");
 	}
 ?>
 <!DOCTYPE html>
@@ -96,7 +96,7 @@
 
 		</form>
 		<br>
-		<div align="center"><a href="index.php">กลับไปหน้าหลัก</a></div>
+		<div align="center"><a href="index.php?id=0">กลับไปหน้าหลัก</a></div>
 	</div>
 </body>
 
