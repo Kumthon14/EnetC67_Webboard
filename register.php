@@ -59,6 +59,14 @@
 							</div>
 							<div class="row mt-3">
 								<div class="col-sm-3 col-md-3 col-lg-3 mx-auto my-auto">
+									ยืนยันรหัสผ่าน:
+								</div>
+								<div class="col-sm-9 col-md-9 col-lg-9 mx-auto my-auto">
+									<input type="password" class="form-control" name="pwd" required>
+								</div>
+							</div>
+							<div class="row mt-3">
+								<div class="col-sm-3 col-md-3 col-lg-3 mx-auto my-auto">
 									ชื่อ-นามสกุล:
 								</div>
 								<div class="col-sm-9 col-md-9 col-lg-9 mx-auto my-auto">

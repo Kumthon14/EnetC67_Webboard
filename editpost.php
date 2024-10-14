@@ -1,5 +1,12 @@
 <?php
     session_start();
+    $conn = new PDO("mysql:host=localhost;dbname=webboard;charset=utf8", "root", "");
+    $sql = "SELECT user_id FROM post WHERE id=$_GET[id]";
+    $result = $conn->query($sql);
+    $row = $result->fetch();
+    if($row[0] != $_SESSION['user_id']) {
+        header("location:index.php?id=0");
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,16 +27,15 @@
         <?php
             include "nav.php";
 
-            $conn = new PDO("mysql:host=localhost;dbname=webboard;charset=utf8", "root", "");
             $sql = "SELECT * FROM post WHERE id=$_GET[id]";
             $row = $conn->query($sql);
             $data = $row->fetch();
         ?>
 
         <div class="card text-dark bg-white border-warning col-lg-4 mx-auto mt-4">
-            <div class="card-header bg-warning text-white">ตั้งกระทู้ใหม่</div>
+            <div class="card-header bg-warning text-white">แก้ไขกระทู้</div>
             <div class="card-body">
-                <form action="newpost_save.php" method="post">
+                <form action="editpost_save.php?id=<?php echo $_GET['id']?>" method="post">
                     <div class="row mb-3">
                         <label class="col-lg-3 col-form-label">หมวดหมู่ :</label>
                         <div class="col-lg-9">
@@ -47,6 +53,8 @@
                                         echo "<option value=" . $row["id"] . ">" . $row["name"] . "</option>";
                                     }
                                 }
+
+                                $conn = null;
                                 ?>
                             </select>
                         </div>
