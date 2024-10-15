@@ -13,6 +13,19 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 	<title>Register</title>
+	<script>
+		function diffpass(){
+			var id_pass = document.getElementById("password")
+			var id_confirm = document.getElementById("confirm")
+			var data_pass = id_pass.value
+			var data_confirm = id_confirm.value
+			if(data_pass != data_confirm){
+				alert("รหัสผ่านทั้งสองช่องไม่ตรงกัน")
+				id_pass.value=""
+				id_confirm.value=""
+			}
+		}
+	</script>
 </head>
 
 <body>
@@ -54,7 +67,7 @@
 									รหัสผ่าน:
 								</div>
 								<div class="col-sm-9 col-md-9 col-lg-9 mx-auto my-auto">
-									<input type="password" class="form-control" name="pwd" required>
+									<input id="password" type="password" class="form-control" name="pwd" required>
 								</div>
 							</div>
 							<div class="row mt-3">
@@ -62,7 +75,7 @@
 									ยืนยันรหัสผ่าน:
 								</div>
 								<div class="col-sm-9 col-md-9 col-lg-9 mx-auto my-auto">
-									<input type="password" class="form-control" name="pwd" required>
+									<input onblur="diffpass()" id="confirm" type="password" class="form-control" name="pwd" required>
 								</div>
 							</div>
 							<div class="row mt-3">

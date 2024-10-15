@@ -14,6 +14,21 @@ if (isset($_SESSION['id'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <title>Login</title>
+    <script>
+        function showpass(){
+            var pass = document.getElementById("pwd")
+            var icon = document.getElementById("icon")
+            if(pass.type == "password"){
+                pass.type = "text"
+                icon.classList.remove("bi-eye-fill")
+                icon.classList.add("bi-eye-slash-fill")
+            }else{
+                pass.type = "password"
+                icon.classList.remove("bi-eye-slash-fill")
+                icon.classList.add("bi-eye-fill")
+            }
+        }
+    </script>
 </head>
 
 <body>
@@ -21,7 +36,7 @@ if (isset($_SESSION['id'])) {
         <h1 style="text-align: center;">Webboard KakKak</h1>
 
         <?php
-            include "nav.php";
+        include "nav.php";
         ?>
 
         <br>
@@ -31,11 +46,11 @@ if (isset($_SESSION['id'])) {
                 <div class="col-sm-8 col-md-6 col-lg-4 mx-auto">
                     <?php
                     if (isset($_SESSION['error'])) {
-                            echo "
+                        echo "
                                 <div class='alert alert-danger'>
                                 ชื่อบัญชีหรือรหัสผ่านไม่ถูกต้อง
                                 </div>";
-                            unset($_SESSION['error']);
+                        unset($_SESSION['error']);
                     }
                     ?>
                     <div class="card">
@@ -47,7 +62,10 @@ if (isset($_SESSION['id'])) {
                             </div>
                             <div class="mb-3">
                                 <label for="pwd" class="form-label">Password :</label>
-                                <input id="pwd" type="password" placeholder="รหัสผ่าน" class="form-control" name="pwd">
+                                <span class="input-group">
+                                    <input id="pwd" type="password" class="form-control" placeholder="รหัสผ่าน" name="pwd" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                                    <button onclick="showpass()" class="input-group-text" type="button" id="button-addon1"><i id="icon" class="bi bi-eye-fill"></i></button>
+                                </span>
                             </div>
                             <div class="text-center">
                                 <input type="submit" value="Login" class="btn btn-primary">
