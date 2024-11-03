@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 11, 2024 at 10:50 AM
--- Server version: 10.4.24-MariaDB
--- PHP Version: 8.1.6
+-- Generation Time: Nov 03, 2024 at 11:35 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `category` (
   `id` int(11) NOT NULL,
-  `name` varchar(32) COLLATE utf8_unicode_ci NOT NULL
+  `name` varchar(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -39,7 +39,13 @@ CREATE TABLE `category` (
 INSERT INTO `category` (`id`, `name`) VALUES
 (1, 'เรื่องทั่วไป'),
 (2, 'เรื่องเรียน'),
-(3, 'เรื่องกีฬา');
+(3, 'เรื่องกีฬา'),
+(4, 'เรื่องความรัก'),
+(5, 'เรื่องงาน'),
+(6, 'เรื่องเกม'),
+(7, 'เรื่องเสื้อผ้า'),
+(8, 'เรื่องเงิน'),
+(9, 'เรื่องเครื่องสำอาง');
 
 -- --------------------------------------------------------
 
@@ -49,7 +55,7 @@ INSERT INTO `category` (`id`, `name`) VALUES
 
 CREATE TABLE `comment` (
   `id` int(11) NOT NULL,
-  `content` varchar(20148) COLLATE utf8_unicode_ci NOT NULL,
+  `content` varchar(20148) NOT NULL,
   `post_date` datetime NOT NULL,
   `user_id` int(11) NOT NULL,
   `post_id` int(11) NOT NULL
@@ -60,10 +66,7 @@ CREATE TABLE `comment` (
 --
 
 INSERT INTO `comment` (`id`, `content`, `post_date`, `user_id`, `post_id`) VALUES
-(1, 'เข้าสู่อาทิตย์ที่ 5', '2024-10-11 14:22:25', 3, 1),
-(2, 'เราจะสู้ไปด้วยกัน', '2024-10-11 14:26:01', 3, 1),
-(3, 'ไม่อยากสู้ จะขิตแล้ว', '2024-10-11 15:06:47', 4, 1),
-(4, 'เทสๆ', '2024-10-11 15:38:09', 3, 1);
+(1, 'อยากโดนจำกัดการมองเห็น', '2024-11-03 16:23:20', 6, 7);
 
 -- --------------------------------------------------------
 
@@ -73,8 +76,8 @@ INSERT INTO `comment` (`id`, `content`, `post_date`, `user_id`, `post_id`) VALUE
 
 CREATE TABLE `post` (
   `id` int(11) NOT NULL,
-  `title` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `content` varchar(2048) COLLATE utf8_unicode_ci NOT NULL,
+  `title` varchar(128) NOT NULL,
+  `content` varchar(2048) NOT NULL,
   `post_date` datetime NOT NULL,
   `cat_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL
@@ -85,7 +88,14 @@ CREATE TABLE `post` (
 --
 
 INSERT INTO `post` (`id`, `title`, `content`, `post_date`, `cat_id`, `user_id`) VALUES
-(1, 'วันนี้ชดบ่าย', 'ชดมาสี่อาทิตย์แล้ว จะอ้วกแตก', '2024-10-11 13:41:39', 1, 3);
+(1, 'การบ้านยากจัง', 'แต่ก็ทำได้', '2024-10-07 21:30:34', 1, 4),
+(2, 'แค่อย่างจะลอง', 'Date time มันขึ้นไหม', '2024-10-07 21:35:07', 2, 4),
+(3, 'เทสอีกครั้ง', 'id ถูกหรือไม่', '2024-10-07 23:44:19', 2, 4),
+(4, 'Test อีกรอบนึง', 'id ของผู้ใช้', '2024-10-07 23:45:19', 2, 4),
+(5, 'อยากจะฮู้', 'ไหนลองสักที', '2024-10-11 18:39:45', 1, 5),
+(6, 'แมนซิตี้', 'จะไม่ได้เล่นกะเพื่อนแล้ว', '2024-10-11 18:43:19', 3, 1),
+(7, 'มาลองเป็นเรื่องเรียน', 'เดี๋ยวเปลี่ยนได้ทีเถอะ', '2024-10-11 19:21:19', 2, 5),
+(9, 'palworld', 'เกมก็อป ไม่ได้เรื่อง', '2024-11-03 16:28:29', 6, 6);
 
 -- --------------------------------------------------------
 
@@ -95,12 +105,12 @@ INSERT INTO `post` (`id`, `title`, `content`, `post_date`, `cat_id`, `user_id`) 
 
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
-  `login` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `password` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  `gender` char(1) COLLATE utf8_unicode_ci NOT NULL,
-  `email` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `role` char(1) COLLATE utf8_unicode_ci NOT NULL
+  `login` varchar(32) NOT NULL,
+  `password` varchar(64) NOT NULL,
+  `name` varchar(64) NOT NULL,
+  `gender` char(1) NOT NULL,
+  `email` varchar(32) NOT NULL,
+  `role` char(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -108,10 +118,12 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `login`, `password`, `name`, `gender`, `email`, `role`) VALUES
-(1, 'phollakrit', '1234567890', 'พลกฤษณ์ วงษ์สันติสุข', 'm', 'phollakrit.w@cit.kmutnb.ac.th', 'm'),
-(2, 'member', 'mem1234', 'member', 'm', 'phollakrit@gmail.com', 'm'),
-(3, 'admin', '8dc9fa69ec51046b4472bb512e292d959edd2aef', 'กำธน เจียมสกุลทิพย์', 'm', 'itznongdong@gmail.com', 'a'),
-(4, 'KT', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', 'กำธน เจียมสกุลทิพย์', 'm', 'itznongdong@gmail.com', 'm');
+(1, 'kt', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', 'กำธน เจียมสกุลทิพย์', 'm', 'itznongdong@gmail.com', 'm'),
+(2, '2124', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', '2131', 'm', 'itznongdong@gmail.com', 'm'),
+(3, 'tit', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', 'กำธน เจียมสกุลทิพย์', 'm', 'itznongdong@gmail.com', 'm'),
+(4, 'test', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', 'พิชชาภา อยู่อินทร์', 'f', 'Waii@gmail.com', 'a'),
+(5, 'admin', '8dc9fa69ec51046b4472bb512e292d959edd2aef', 'กำธน เจียมสกุลทิพย์', 'm', 'itznongdong@gmail.com', 'a'),
+(6, 'bantest', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', 'นายแบน', 'f', 'ban@gmail.com', 'b');
 
 --
 -- Indexes for dumped tables
@@ -149,25 +161,25 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `comment`
 --
 ALTER TABLE `comment`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `post`
 --
 ALTER TABLE `post`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -4,7 +4,7 @@
     $sql = "SELECT user_id FROM post WHERE id=$_GET[id]";
     $result = $conn->query($sql);
     $row = $result->fetch();
-    if($row[0] != $_SESSION['user_id']) {
+    if ($row[0] != $_SESSION['user_id']) {
         header("location:index.php?id=0");
     }
 ?>
@@ -31,30 +31,35 @@
             $row = $conn->query($sql);
             $data = $row->fetch();
         ?>
-
+        <?php
+            if (isset($_SESSION["edit_status"])) {
+                echo "<div class='alert alert-success col-lg-4 mx-auto mt-4'>แก้ไขข้อมูลเรียบร้อยแล้ว</div>";
+                unset($_SESSION["edit_status"]);
+        }
+        ?>
         <div class="card text-dark bg-white border-warning col-lg-4 mx-auto mt-4">
             <div class="card-header bg-warning text-white">แก้ไขกระทู้</div>
             <div class="card-body">
-                <form action="editpost_save.php?id=<?php echo $_GET['id']?>" method="post">
+                <form action="editpost_save.php?id=<?php echo $_GET['id'] ?>" method="post">
                     <div class="row mb-3">
                         <label class="col-lg-3 col-form-label">หมวดหมู่ :</label>
                         <div class="col-lg-9">
                             <select name="category" class="form-select">
                                 <?php
-                                $sql = "SELECT * FROM category";
-                                $sql1 = "SELECT id,cat_id FROM post WHERE id=$_GET[id]";
-                                $result1 = $conn->query($sql1);
-                                $data1 = $result1->fetch();
+                                    $sql = "SELECT * FROM category";
+                                    $sql1 = "SELECT id,cat_id FROM post WHERE id=$_GET[id]";
+                                    $result1 = $conn->query($sql1);
+                                    $data1 = $result1->fetch();
 
-                                foreach ($conn->query($sql) as $row) {
-                                    if($data1 ["id"] == $_GET["id"] && $data1["cat_id"] == $row["id"]) {
-                                        echo "<option value=" . $row["id"] . " selected>" . $row["name"] . "</option>";
-                                    }else{
-                                        echo "<option value=" . $row["id"] . ">" . $row["name"] . "</option>";
+                                    foreach ($conn->query($sql) as $row) {
+                                        if ($data1["id"] == $_GET["id"] && $data1["cat_id"] == $row["id"]) {
+                                            echo "<option value=" . $row["id"] . " selected>" . $row["name"] . "</option>";
+                                        } else {
+                                            echo "<option value=" . $row["id"] . ">" . $row["name"] . "</option>";
+                                        }
                                     }
-                                }
 
-                                $conn = null;
+                                    $conn = null;
                                 ?>
                             </select>
                         </div>
@@ -62,13 +67,13 @@
                     <div class="row mb-3">
                         <label class="col-lg-3 col-form-label">หัวข้อ :</label>
                         <div class="col-lg-9">
-                            <input type="text" name="topic" class="form-control" value="<?php echo $data['title']?>" required>
+                            <input type="text" name="topic" class="form-control" value="<?php echo $data['title'] ?>" required>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label class="col-lg-3 col-form-label">เนื้อหา :</label>
                         <div class="col-lg-9">
-                            <textarea name="comment" class="form-control" rows="8" required><?php echo $data['content']?></textarea>
+                            <textarea name="comment" class="form-control" rows="8" required><?php echo $data['content'] ?></textarea>
                         </div>
                     </div>
                     <div class="row">

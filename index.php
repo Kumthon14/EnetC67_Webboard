@@ -69,26 +69,28 @@
             <?php
             $conn = new PDO("mysql:host=localhost;dbname=webboard;charset=utf8", "root", "");
             if($_GET['id'] == 0){
-                $sql = "SELECT category.name,post.title,post.id,user.login,post.post_date FROM post INNER JOIN user ON (post.user_id=user.id) INNER JOIN category as category ON (post.cat_id=category.id) ORDER BY post.post_date DESC";
+                $sql = "SELECT category.name,post.title,post.id,user.login,post.post_date,user.role FROM post INNER JOIN user ON (post.user_id=user.id) INNER JOIN category as category ON (post.cat_id=category.id) ORDER BY post.post_date DESC";
             }else{
-                $sql = "SELECT category.name,post.title,post.id,user.login,post.post_date FROM post INNER JOIN user ON (post.user_id=user.id) INNER JOIN category as category ON (post.cat_id=category.id) WHERE category.id=$_GET[id] ORDER BY post.post_date DESC";
+                $sql = "SELECT category.name,post.title,post.id,user.login,post.post_date,user.role FROM post INNER JOIN user ON (post.user_id=user.id) INNER JOIN category as category ON (post.cat_id=category.id) WHERE category.id=$_GET[id] ORDER BY post.post_date DESC";
             }
             $result = $conn->query($sql);
             while ($row = $result->fetch()) {
-                echo "<tr><td>[ $row[0] ] <a href=post.php?id=$row[2] style=text-decoration:none>$row[1]</a>";
-                if (isset($_SESSION['id']) && $_SESSION["role"] == 'a') {
-                    echo "<a onclick='confirmdelete($row[2])' class='btn btn-danger' style='float:right' role='button'><i class='bi bi-trash'></i></a>";
-                    if($row[3] == $_SESSION['username']){
-                        echo "<a href='editpost.php?id=$row[2]' class='btn btn-warning me-2' style='float:right' role='button'><i class='bi bi-pencil'></i></i></a>";
-                    }
-                }else if(isset($_SESSION['id'])){
-                    if($row[3] == $_SESSION['username']){
+                if($row[5] != "b"){
+                    echo "<tr><td>[ $row[0] ] <a href=post.php?id=$row[2] style=text-decoration:none>$row[1]</a>";
+                    if (isset($_SESSION['id']) && $_SESSION["role"] == 'a') {
                         echo "<a onclick='confirmdelete($row[2])' class='btn btn-danger' style='float:right' role='button'><i class='bi bi-trash'></i></a>";
-                        echo "<a href='editpost.php?id=$row[2]' class='btn btn-warning me-2' style='float:right' role='button'><i class='bi bi-pencil'></i></i></a>";
+                        if($row[3] == $_SESSION['username']){
+                            echo "<a href='editpost.php?id=$row[2]' class='btn btn-warning me-2' style='float:right' role='button'><i class='bi bi-pencil'></i></i></a>";
+                        }
+                    }else if(isset($_SESSION['id'])){
+                        if($row[3] == $_SESSION['username']){
+                            echo "<a onclick='confirmdelete($row[2])' class='btn btn-danger' style='float:right' role='button'><i class='bi bi-trash'></i></a>";
+                            echo "<a href='editpost.php?id=$row[2]' class='btn btn-warning me-2' style='float:right' role='button'><i class='bi bi-pencil'></i></i></a>";
+                        }
                     }
+                
+                    echo "<br>$row[3] - $row[4]</td></tr>";
                 }
-
-                echo "<br>$row[3] - $row[4]</td></tr>";
             }
             $conn = null;
             ?>
